@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 
 namespace cpw.lib
 {
+    //http://stackoverflow.com/questions/5754879/usage-of-mutex-in-c-sharp
+
     public class MutexTest
     {
+        //Create a mutex which is in the signaled state
+        private readonly Mutex _mutant = new Mutex();
+
         //Signaling and waiting
 
         //Signaled
@@ -17,21 +22,17 @@ namespace cpw.lib
 
         public void CriticalRegionTest1()
         {
-            //Create a mutex which is in the signaled state
-            Mutex mutant = new Mutex();
-
-            mutant.WaitOne();
+            _mutant.WaitOne();
             try
             {
                 //Critical Region
-                
+                Console.WriteLine($"Current tread {Thread.CurrentThread.ManagedThreadId.ToString()}");
             }
             finally
             {
-                mutant.ReleaseMutex();
+                _mutant.ReleaseMutex();
             }
-
-            mutant.Close();
+            
         }
 
     }
